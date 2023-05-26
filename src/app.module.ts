@@ -1,9 +1,22 @@
 import { Module } from '@nestjs/common';
 import { CitiesModule } from './cities/cities.module';
 import { DatasourceModule } from './datasource/datasource.module';
+import { CountriesModule } from './countries/countries.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PlacesModule } from './places/places.module';
 
 @Module({
-  imports: [CitiesModule, DatasourceModule],
+  imports: [CitiesModule, DatasourceModule, CountriesModule, PlacesModule, TypeOrmModule.forRoot({
+    type: 'postgres', 
+    port: 5432,
+    username: 'education',
+    password: 'password',
+    host: 'localhost',
+    synchronize: false,
+    logging: 'all',
+    entities: ['dist/**/*.entity{.ts, .js}']
+  })
+],
   controllers: [],
   providers: [],
 })

@@ -17,6 +17,18 @@ export class CitiesService {
       findAll(): City[] {
         return this.datasourceService.getCities();
       }
+      findAllInCountry(country: string): City[]{
+        let cities: City[] = [];
+        for (let i of this.datasourceService.getCities())
+        {
+          if (i.country = country)
+          {
+            cities.push(i);
+          }
+        }
+        return cities;
+
+      }
       update(id: number, updatedCity: City) {
         const index = this.datasourceService
           .getCities()

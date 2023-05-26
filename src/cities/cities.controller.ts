@@ -19,6 +19,10 @@ export class CitiesController {
   update(@Param('id') id: string, @Body() updateCity: City) {
     return this.citiesService.update(+id, updateCity);
   }
+  @Get(':country')
+  findAllByCountry(@Param('country') country:string){
+    return this.citiesService.findAllInCountry(country);
+  }
   @Post()
   create(@Body() createCity: City) {
     return this.citiesService.create(createCity);
