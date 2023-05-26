@@ -21,7 +21,7 @@ export class City {
       inverseJoinColumn:{name:'country_id'},
     })
     country: Country;
-    @ManyToMany((type) => Place, (place) => place.city)
+    @ManyToMany((type) => Place, (place) => place.cities)
     @JoinTable({
       name:'city_place',
       joinColumn:{name:'city_id'},

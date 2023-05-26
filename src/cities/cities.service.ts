@@ -21,7 +21,7 @@ export class CitiesService {
         let cities: City[] = [];
         for (let i of this.datasourceService.getCities())
         {
-          if (i.country = country)
+          if (i.country.name = country)
           {
             cities.push(i);
           }
