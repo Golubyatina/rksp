@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { Place } from './place.entity';
 import { PlacesController } from './places.controller';
 import { PlacesService } from './places.service';
-import { DatasourceModule } from 'src/datasource/datasource.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { City } from 'src/cities/city.entity';
 
 @Module({
   controllers: [PlacesController],
   providers: [PlacesService],
-  imports: [DatasourceModule]
+  imports: [TypeOrmModule.forFeature([City, Place])]
 })
 export class PlacesModule {}

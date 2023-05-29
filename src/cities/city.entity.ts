@@ -2,11 +2,13 @@ import { Place } from "src/places/place.entity";
 import { Country } from "src/countries/country.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { type } from "os";
+import { ApiProperty } from "@nestjs/swagger";
 
 
 @Entity('cities')
 export class City {
   @PrimaryGeneratedColumn()
+  @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
     id: number;
     @Column()
     name: string;
@@ -20,7 +22,7 @@ export class City {
       joinColumn: {name:'city_id'},
       inverseJoinColumn:{name:'country_id'},
     })
-    country: Country;
+    country: Country[];
     @ManyToMany((type) => Place, (place) => place.cities)
     @JoinTable({
       name:'city_place',

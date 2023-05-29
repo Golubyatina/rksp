@@ -9,6 +9,8 @@ export class Place {
     name: string;
     @Column()
     coordinates: string;
+    @Column()
+    description: string;
     @ManyToMany((type) => City, (city) => city.places)
     @JoinTable({
       name:'city_place',
