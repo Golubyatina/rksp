@@ -4,6 +4,8 @@ import { CountriesModule } from './countries/countries.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlacesModule } from './places/places.module';
 import { RegionsModule } from './regions/regions.module';
+import { ExceptionsLoggerFilter } from './exceptionlogger/exceptionLogger.filter';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [CitiesModule, CountriesModule, PlacesModule, RegionsModule, TypeOrmModule.forRoot({
@@ -21,7 +23,7 @@ import { RegionsModule } from './regions/regions.module';
   })
 ],
   controllers: [],
-  providers: [],
+  providers: [{provide: APP_FILTER, useClass: ExceptionsLoggerFilter}],
 })
 export class AppModule {}
  
