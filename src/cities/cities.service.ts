@@ -6,6 +6,7 @@ import { Place } from 'src/places/place.entity';
 import { In, Repository } from 'typeorm';
 import { CreateCityDto } from './dto/city.dto';
 import { IncompleteCityDto } from './dto/incomplete-city.dto';
+import { Region } from 'src/regions/region.entity';
 
 @Injectable()
 export class CitiesService {
@@ -15,7 +16,9 @@ export class CitiesService {
       @InjectRepository(Country)
       private readonly countryRepository: Repository<Country>,
       @InjectRepository(Place)
-      private readonly placeRepository: Repository<Place>) {}
+      private readonly placeRepository: Repository<Place>,
+      @InjectRepository(Region)
+      private readonly regionRepository: Repository<Region>) {}
 
     async create(cityDto: CreateCityDto): Promise<City> {
         const city = this.cityRepository.create();
@@ -26,6 +29,10 @@ export class CitiesService {
           id: In(cityDto.country),
         });
         city.country = country;
+        const region = await this.regionRepository.findBy({
+          id: In(cityDto.region),
+        })
+        city.region = region;
         await this.cityRepository.save(city);
         return city;
     }
@@ -33,19 +40,18 @@ export class CitiesService {
     findOne(id: number): Promise<City> {
         return this.cityRepository.findOne({
           where: {id},
-          relations: {country: true, places:true }
+          relations: {country: true, places:true, region:true }
         })
       }
       async findIncomplete(): Promise<IncompleteCityDto[]> {
-        const citys = await this.cityRepository.find(); //получаем массив City из БД
-        const incompleteCitys: IncompleteCityDto[] = citys.map((city) => {
-          //преобразуем массив City в массив IncompleteCityDto
+        const cities = await this.cityRepository.find();
+        const incompleteCitys: IncompleteCityDto[] = cities.map((city) => {
           const incompleteCity = new IncompleteCityDto();
           incompleteCity.id = city.id;
           incompleteCity.coordinates = city.coordinates;
           return incompleteCity;
         });
-        return incompleteCitys; //возвращаем массив IncompleteCityDto
+        return incompleteCitys
       }
     
     
@@ -53,7 +59,8 @@ export class CitiesService {
         const cities = await this.cityRepository.find({
           relations:{
             country:true,
-            places:true
+            places:true,
+            region:true
           }
         });
         return cities;
@@ -68,6 +75,7 @@ export class CitiesService {
         city.population = updatedCity.population
         city.country = updatedCity.country
         city.places = updatedCity.places
+        city.region = updatedCity.region
         await this.cityRepository.save(city)
         return city;
       }

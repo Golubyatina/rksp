@@ -5,6 +5,7 @@ import { Country } from 'src/countries/country.entity';
 import { In, Repository } from 'typeorm';
 import { CreateCountryDto } from './dto/country.dto';
 import { IncompleteCountryDto } from './dto/incomplete-country.dto';
+import { Region } from 'src/regions/region.entity';
 
 @Injectable()
 export class CountriesService {
@@ -12,7 +13,9 @@ export class CountriesService {
     @InjectRepository(City)
     private readonly cityRepository: Repository<City>,
     @InjectRepository(Country)
-    private readonly countryRepository: Repository<Country>) {}
+    private readonly countryRepository: Repository<Country>,
+    @InjectRepository(Region)
+    private readonly regionRepository: Repository<Region>) {}
     
     async create(countryDto: CreateCountryDto): Promise<Country> {
       const country = this.countryRepository.create();
@@ -23,6 +26,10 @@ export class CountriesService {
         id: In(countryDto.cities),
       });
       country.cities = cities;
+      const regions = await this.regionRepository.findBy({
+        id: In(countryDto.regions)
+      })
+      country.regions = regions
       await this.countryRepository.save(country);
       return country;
   }
@@ -34,22 +41,23 @@ export class CountriesService {
       })
     }
     async findIncomplete(): Promise<IncompleteCountryDto[]> {
-      const countries = await this.countryRepository.find(); //получаем массив Country из БД
+      const countries = await this.countryRepository.find();
       const incompleteCountries: IncompleteCountryDto[] = countries.map((country) => {
-        //преобразуем массив Country в массив IncompleteCountryDto
+      
         const incompleteCountry = new IncompleteCountryDto();
         incompleteCountry.id = country.id;
         incompleteCountry.capital = country.capital;
         return incompleteCountry;
       });
-      return incompleteCountries; //возвращаем массив IncompleteCountryDto
+      return incompleteCountries; 
     }
   
   
     async findAll(): Promise<Country[]> {
       const cities = await this.countryRepository.find({
         relations:{
-          cities:true
+          cities:true,
+          regions:true
         }
       });
       return cities;
@@ -63,6 +71,7 @@ export class CountriesService {
       country.capital = updatedCountry.capital
       country.population = updatedCountry.population
       country.cities = updatedCountry.cities
+      country.regions = updatedCountry.regions
       await this.countryRepository.save(country)
       return country;
     }

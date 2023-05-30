@@ -1,6 +1,7 @@
 import { type } from "os";
 import { City } from "src/cities/city.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Region } from "src/regions/region.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { JoinAttribute } from "typeorm/query-builder/JoinAttribute";
 
 @Entity('countries')
@@ -20,5 +21,12 @@ export class Country {
       inverseJoinColumn:{name:'city_id'}
     })
     cities: City[];
+    @ManyToMany((type) => Region, (region) => region.country)
+    @JoinTable({
+      name:'region_country',
+      joinColumn: {name:'region_id'},
+      inverseJoinColumn:{name:'country_id'},
+    })
+    regions: Region[];
   }
   

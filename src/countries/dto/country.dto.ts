@@ -10,4 +10,6 @@ export class CreateCountryDto {
     population: number;
     @ApiProperty({example: "[1, 2]", description: 'Айди городов, находящихся в стране'})
     cities: number[];
+    @ApiProperty({example: "[1, 2]", description: 'Айди регионов, находящихся в стране'})
+    regions: number[];
 }

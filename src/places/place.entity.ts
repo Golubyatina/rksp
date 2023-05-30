@@ -11,7 +11,7 @@ export class Place {
     coordinates: string;
     @Column()
     description: string;
-    @ManyToMany((type) => City, (city) => city.places)
+    @ManyToMany((type) => City, (city) => city.places, {onDelete: "CASCADE"})
     @JoinTable({
       name:'city_place',
       joinColumn:{name:'place_id'},

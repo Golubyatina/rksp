@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  await app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
     .setTitle('Education API')
     .setVersion('1.0')
@@ -11,7 +12,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api_docs', app, document);
   await app.listen(3001);
-  await app.setGlobalPrefix('/api');
+
 
 }
 bootstrap();

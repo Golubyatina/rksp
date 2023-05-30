@@ -10,4 +10,6 @@ export class CreateCityDto {
     population: number;
     @ApiProperty({example: "[1]", description: 'Айди страны, в которой находится город'})
     country: number[];
+    @ApiProperty({example: "[1]", description: 'Айди региона, в котором находится город'})
+    region: number[];
 }
