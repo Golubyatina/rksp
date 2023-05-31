@@ -14,14 +14,14 @@ export class Country {
     capital: string;
     @Column()
     population: number;
-    @ManyToMany((type) => City, (city) => city.country)
+    @OneToMany((type) => City, (city) => city.country)
     @JoinTable({
       name: 'city_country',
       joinColumn:{name:'country_id'},
       inverseJoinColumn:{name:'city_id'}
     })
     cities: City[];
-    @ManyToMany((type) => Region, (region) => region.country)
+    @OneToMany((type) => Region, (region) => region.country)
     @JoinTable({
       name:'region_country',
       joinColumn: {name:'region_id'},

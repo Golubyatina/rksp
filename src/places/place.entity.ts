@@ -1,6 +1,6 @@
 import { type } from "os";
 import { City } from "src/cities/city.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity('places')
 export class Place {
   @PrimaryGeneratedColumn()
@@ -11,7 +11,7 @@ export class Place {
     coordinates: string;
     @Column()
     description: string;
-    @ManyToMany((type) => City, (city) => city.places, {onDelete: "CASCADE"})
+    @ManyToOne((type) => City, (city) => city.places, {onDelete: "CASCADE"})
     @JoinTable({
       name:'city_place',
       joinColumn:{name:'place_id'},

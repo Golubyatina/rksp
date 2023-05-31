@@ -16,14 +16,14 @@ export class Region {
     coordinates: string;
     @Column()
     capital:string
-    @ManyToMany((type) => Country, (country) => country.regions)
+    @ManyToOne((type) => Country, (country) => country.regions)
     @JoinTable({
       name:'region_country',
       joinColumn: {name:'country_id'},
       inverseJoinColumn:{name:'region_id'},
     })
     country: Country;
-    @ManyToMany((type) => City, (city) => city.region)
+    @OneToMany((type) => City, (city) => city.region)
     @JoinTable({
       name:'city_region',
       joinColumn:{name:'region_id'},
