@@ -9,8 +9,8 @@ async function bootstrap() {
   const httpAdapter  = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   const config = new DocumentBuilder()
-    .setTitle('Education API')
-    .setVersion('1.0')
+    .setTitle('Statistics API')
+    .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api_docs', app, document);
